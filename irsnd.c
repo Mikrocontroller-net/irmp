@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
  * @file irsnd.c
  *
- * Copyright (c) 2010-2018 Frank Meyer - frank(at)fli4l.de
+ * Copyright (c) 2010-2019 Frank Meyer - frank(at)fli4l.de
  *
  * Supported AVR mikrocontrollers:
  *
@@ -3151,7 +3151,7 @@ main (int argc, char ** argv)
 
         putchar ('\n');
 
-#if 1 // enable here to send twice
+#if 0 // enable here to send twice
         (void) irsnd_send_data (&irmp_data, TRUE);
 
         while (irsnd_busy)

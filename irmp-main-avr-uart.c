@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
  * irmp-main-avr-uart.c - demo main module to test IRMP decoder on AVR with UART
  *
- * Copyright (c) 2009-2018 Frank Meyer - frank(at)fli4l.de
+ * Copyright (c) 2009-2019 Frank Meyer - frank(at)fli4l.de
  *
  * This demo module is runnable on AVRs with UART
  *

@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
  * irmp-main-avr-mitsu-heavy.c - demo main module to test Mitsubishi heavy airconditioner
  *
- * Copyright (c) 2016-2018 Frank Meyer - frank(at)fli4l.de
+ * Copyright (c) 2016-2019 Frank Meyer - frank(at)fli4l.de
  *
  * This demo module is runnable on AVRs
  *

@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
  * irmp.h
  *
- * Copyright (c) 2009-2018 Frank Meyer - frank(at)fli4l.de
+ * Copyright (c) 2009-2019 Frank Meyer - frank(at)fli4l.de
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,10 +13,18 @@
 #ifndef _IRMP_H_
 #define _IRMP_H_
 
+#ifndef IRMP_USE_AS_LIB
+#  define IRMPCONFIG_STAGE1_H
+#  include "irmpconfig.h"
+#  undef IRMPCONFIG_STAGE1_H
+#endif
+
 #include "irmpsystem.h"
 
 #ifndef IRMP_USE_AS_LIB
+#  define IRMPCONFIG_STAGE2_H
 #  include "irmpconfig.h"
+#  undef IRMPCONFIG_STAGE2_H
 #endif
 
 #if defined (__AVR_XMEGA__)
@@ -102,6 +110,11 @@ void irmp_idle(void);                   // the user has to provide an implementa
 #if IRMP_SUPPORT_TECHNICS_PROTOCOL == 1
 #  undef IRMP_SUPPORT_MATSUSHITA_PROTOCOL
 #  define IRMP_SUPPORT_MATSUSHITA_PROTOCOL      1
+#endif
+
+#if IRMP_32_BIT == 0 && IRMP_SUPPORT_MERLIN_PROTOCOL == 1
+#  undef IRMP_SUPPORT_MERLIN_PROTOCOL
+#  warning MERLIN protocol disabled, IRMP_32_BIT=1 needed
 #endif
 
 #if IRMP_SUPPORT_DENON_PROTOCOL == 1 && IRMP_SUPPORT_RUWIDO_PROTOCOL == 1

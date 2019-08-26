@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
  * irmp-main-stm32.c - demo main module to test IRMP decoder on STM32
  *
- * Copyright (c) 2009-2018 Frank Meyer - frank(at)fli4l.de
+ * Copyright (c) 2009-2019 Frank Meyer - frank(at)fli4l.de
  *
  * This demo module is runnable on STM32
  *
