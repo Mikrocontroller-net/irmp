@@ -267,6 +267,18 @@ void irmp_idle(void);                   // the user has to provide an implementa
 #  define IRMP_SUPPORT_RCMM_PROTOCOL            0
 #endif
 
+#if IRMP_SUPPORT_PENTAX_PROTOCOL == 1 && F_INTERRUPTS > 16000
+#  warning F_INTERRUPTS too high, PENTAX protocol disabled (should be max 16000)
+#  undef IRMP_SUPPORT_PENTAX_PROTOCOL
+#  define IRMP_SUPPORT_PENTAX_PROTOCOL          0
+#endif
+
+#if IRMP_SUPPORT_GREE_PROTOCOL == 1 && F_INTERRUPTS > 16000
+#  warning F_INTERRUPTS too high, GREE protocol disabled (should be max 16000)
+#  undef IRMP_SUPPORT_GREE_PROTOCOL
+#  define IRMP_SUPPORT_GREE_PROTOCOL            0
+#endif
+
 #if F_INTERRUPTS > 20000
 #error F_INTERRUPTS too high (should be not greater than 20000)
 #endif
