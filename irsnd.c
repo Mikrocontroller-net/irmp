@@ -1116,6 +1116,18 @@ irsnd_send_data (IRMP_DATA * irmp_data_p, uint8_t do_wait)
             irsnd_busy      = TRUE;
             break;
         }
+        case IRMP_ONKYO_PROTOCOL:
+        {
+            address = bitsrevervse (irmp_data_p->address, NEC_ADDRESS_LEN);
+            command = bitsrevervse (irmp_data_p->command, NEC_COMMAND_LEN);
+
+            irsnd_buffer[0] = (address & 0xFF00) >> 8;                                                          // AAAAAAAA
+            irsnd_buffer[1] = (address & 0x00FF);                                                               // AAAAAAAA
+            irsnd_buffer[2] = (command & 0xFF00) >> 8;                                                          // CCCCCCCC
+            irsnd_buffer[3] = (command & 0x00FF);                                                               // CCCCCCCC
+            irsnd_busy      = TRUE;
+            break;
+        }
 #endif
 #if IRSND_SUPPORT_NEC16_PROTOCOL == 1
         case IRMP_NEC16_PROTOCOL:
@@ -1835,6 +1847,7 @@ irsnd_ISR (void)
 #endif
 #if IRSND_SUPPORT_NEC_PROTOCOL == 1
                     case IRMP_NEC_PROTOCOL:
+                    case IRMP_ONKYO_PROTOCOL:
                     {
                         startbit_pulse_len          = NEC_START_BIT_PULSE_LEN;
 
@@ -2570,6 +2583,7 @@ irsnd_ISR (void)
 #endif
 #if IRSND_SUPPORT_NEC_PROTOCOL == 1
                 case IRMP_NEC_PROTOCOL:
+                case IRMP_ONKYO_PROTOCOL:
 #endif
 #if IRSND_SUPPORT_NEC16_PROTOCOL == 1
                 case IRMP_NEC16_PROTOCOL:
