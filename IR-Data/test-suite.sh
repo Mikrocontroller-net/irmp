@@ -21,8 +21,10 @@ cd `dirname $0`
 mkdir -p tmpsrc
 cp ../irmp.[ch] ../irmpconfig.h ../irsnd.[ch] ../irsndconfig.h ../irmpsystem.h ../irmpprotocols.h ../makefile.lnx tmpsrc
 cd tmpsrc
-sed 's/#define \(IRMP_SUPPORT_[A-Z_0-9]*  *\)[01]/#define \1 1/g' <irmpconfig.h >irmpconfig.new
-sed 's/#define \(IRMP_32_BIT*  *\)[01]/#define \1 0/g' <irmpconfig.new >irmpconfig.h
+sed 's/#define \(IRMP_SUPPORT_[A-Z_0-9]*  *\)[01]/#define \1 1/g' <irmpconfig.h |
+sed 's/#define \(IRMP_SUPPORT_RF_[A-Z_0-9]*  *\)[01]/#define \1 0/g' |
+sed 's/#define \(IRMP_32_BIT*  *\)[01]/#define \1 0/g' >irmpconfig.1
+mv irmpconfig.1 irmpconfig.h
 make -f makefile.lnx clean
 make -f makefile.lnx all
 cd ..
