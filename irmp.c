@@ -3542,7 +3542,9 @@ irmp_ISR (void)
                     if (irmp_pulse_time >= RF_GEN24_0_PULSE_LEN_MIN && irmp_pulse_time <= RF_GEN24_0_PULSE_LEN_MAX &&       // RF_GEN24 has no start bit
                         irmp_pause_time >= RF_GEN24_0_PAUSE_LEN_MIN && irmp_pause_time <= RF_GEN24_0_PAUSE_LEN_MAX)
                     {
+#ifdef ANALYZE
                         ANALYZE_PRINTF ("protocol = RF_GEN24\n");
+#endif
                         irmp_param_p = (IRMP_PARAMETER *) &rf_gen24_param;
                     }
                     else
