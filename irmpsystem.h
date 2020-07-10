@@ -48,6 +48,7 @@
 #  include <stm32f4xx.h>
 #  define ARM_STM32
 #  define ARM_STM32F4XX
+#  define F_CPU (SysCtlClockGet())
 #elif defined(USE_HAL_DRIVER)                                                       // ARM STM32 with HAL Library
 #  include "gpio.h"
 #  if defined(_IRSND_H_)

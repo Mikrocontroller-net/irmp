@@ -293,6 +293,7 @@ void irmp_idle(void);                   // the user has to provide an implementa
 #include "irmpprotocols.h"
 
 #define IRMP_FLAG_REPETITION            0x01
+#define IRMP_FLAG_RELEASE               0x02                                    // see IRMP_ENABLE_RELEASE_DETECTION in irmpconfig.h
 
 #ifdef __cplusplus
 extern "C"

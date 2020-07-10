@@ -73,10 +73,10 @@
  *---------------------------------------------------------------------------------------------------------------------------------------------------
  */
 // typical protocols, disable here!             Enable  Remarks                 F_INTERRUPTS            Program Space
-#define IRMP_SUPPORT_SIRCS_PROTOCOL             1       // Sony SIRCS           >= 10000                 ~150 bytes
-#define IRMP_SUPPORT_NEC_PROTOCOL               1       // NEC + APPLE + ONKYO  >= 10000                 ~300 bytes
-#define IRMP_SUPPORT_SAMSUNG_PROTOCOL           1       // Samsung + Samsg32    >= 10000                 ~300 bytes
-#define IRMP_SUPPORT_KASEIKYO_PROTOCOL          1       // Kaseikyo             >= 10000                 ~250 bytes
+#define IRMP_SUPPORT_SIRCS_PROTOCOL             0       // Sony SIRCS           >= 10000                 ~150 bytes
+#define IRMP_SUPPORT_NEC_PROTOCOL               0       // NEC + APPLE + ONKYO  >= 10000                 ~300 bytes
+#define IRMP_SUPPORT_SAMSUNG_PROTOCOL           0       // Samsung + Samsg32    >= 10000                 ~300 bytes
+#define IRMP_SUPPORT_KASEIKYO_PROTOCOL          0       // Kaseikyo             >= 10000                 ~250 bytes
 
 // more protocols, enable here!                 Enable  Remarks                 F_INTERRUPTS            Program Space
 #define IRMP_SUPPORT_JVC_PROTOCOL               0       // JVC                  >= 10000                 ~150 bytes
@@ -133,8 +133,8 @@
  * If you use an IR sensor, deactivate all RF protocols!
  *---------------------------------------------------------------------------------------------------------------------------------------------------
  */
-#define IRMP_SUPPORT_RF_GEN24_PROTOCOL          0       // RF GEN24 (generic)   >= 15000                 ~250 bytes
-#define IRMP_SUPPORT_RF_X10_PROTOCOL            0       // RF PC X10 (Medion)   >= 15000                 ~250 bytes
+#define IRMP_SUPPORT_RF_GEN24_PROTOCOL          1       // RF GEN24 (generic)   >= 15000                 ~250 bytes
+#define IRMP_SUPPORT_RF_X10_PROTOCOL            1       // RF PC X10 (Medion)   >= 15000                 ~250 bytes
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
  * Change hardware pin here for ATMEL ATMega/ATTiny/XMega
@@ -250,6 +250,16 @@
  */
 #ifndef IRMP_HIGH_ACTIVE
 #  define IRMP_HIGH_ACTIVE                      0                       // set to 1 if you use a RF receiver!
+#endif
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------------
+ * Enable detection of key releases
+ *
+ * If user releases a key on the remote control, last protocol/address/command will be returned with flag IRMP_FLAG_RELEASE set
+ *---------------------------------------------------------------------------------------------------------------------------------------------------
+ */
+#ifndef IRMP_ENABLE_RELEASE_DETECTION
+#  define IRMP_ENABLE_RELEASE_DETECTION         0                       // enable detection of key releases
 #endif
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
