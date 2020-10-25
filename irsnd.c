@@ -193,6 +193,10 @@
  * #  endif
  *---------------------------------------------------------------------------------------------------------------------------------------------------
  */
+
+ #elif defined(ARDUINO)
+// specified here to avoid else case
+
 #else
 #  if !defined (unix) && !defined (WIN32)
 #    error mikrocontroller not defined, please fill in definitions here.
@@ -532,11 +536,17 @@
 #  define IRSND_FREQ_455_KHZ                    (IRSND_FREQ_TYPE) ((F_CPU / 455000 / AVR_PRESCALER / 2) - 1)
 #endif
 
-static volatile uint8_t                         irsnd_busy = 0;
+// Used for Arduino by IRTimer.cpp.h
+volatile uint8_t                                irsnd_busy = 0;
+volatile uint8_t                                irsnd_is_on = FALSE;
+
 static volatile uint8_t                         irsnd_protocol = 0;
 static volatile uint8_t                         irsnd_buffer[11] = {0};
 static volatile uint8_t                         irsnd_repeat = 0;
-static volatile uint8_t                         irsnd_is_on = FALSE;
+
+#if defined(ARDUINO)
+#include "irsndArduinoExt.cpp.h" // must be after the declarations of irsnd_busy etc.
+#else
 
 #if IRSND_USE_CALLBACK == 1
 static void                                     (*irsnd_callback_ptr) (uint8_t);
@@ -620,6 +630,7 @@ irsnd_on (void)
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
  *  Switch PWM off
  *  @details  Switches PWM off
+ *  Only called by irsnd_ISR
  *---------------------------------------------------------------------------------------------------------------------------------------------------
  */
 static void
@@ -891,6 +902,7 @@ irsnd_init (void)
         GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
         GPIO_Init(IRSND_PORT, &GPIO_InitStructure);
         // GPIO_PinRemapConfig(GPIO_*Remap*_TIM[IRSND_TIMER_NUMBER], ENABLE); // only in case of remapping, not necessary for default port-timer mapping
+
 #    endif
 
         /* TIMx clock enable */
@@ -994,7 +1006,13 @@ irsnd_set_callback_ptr (void (*cb)(uint8_t))
 }
 #endif // IRSND_USE_CALLBACK == 1
 
+#endif // ARDUINO
+
+#  ifdef __cplusplus
+bool
+#else
 uint8_t
+#endif
 irsnd_is_busy (void)
 {
     return irsnd_busy;
@@ -1023,7 +1041,14 @@ bitsrevervse (uint16_t x, uint8_t len)
 static uint8_t  sircs_additional_bitlen;
 #endif // IRSND_SUPPORT_SIRCS_PROTOCOL == 1
 
+/*
+ * @param  do_wait - wait for last command to have ended before sending. For Arduino: Additionally wait for sent command to have ended.
+ */
+#  ifdef __cplusplus
+bool
+#else
 uint8_t
+#endif
 irsnd_send_data (IRMP_DATA * irmp_data_p, uint8_t do_wait)
 {
 #if IRSND_SUPPORT_RECS80_PROTOCOL == 1
@@ -1048,7 +1073,7 @@ irsnd_send_data (IRMP_DATA * irmp_data_p, uint8_t do_wait)
     {
         while (irsnd_busy)
         {
-            // do nothing;
+            // wait for last command to have ended
         }
     }
     else if (irsnd_busy)
@@ -1684,6 +1709,16 @@ irsnd_send_data (IRMP_DATA * irmp_data_p, uint8_t do_wait)
         }
     }
 
+#if defined(ARDUINO)
+    storeIRTimer(); // store current timer state to enable alternately send and receive with the same timer
+    initIRTimerForSend(); // Setup timer and interrupts for sending
+    if (do_wait) {
+        while (irsnd_busy) {
+            // do nothing;
+        }
+    }
+#endif
+
     return irsnd_busy;
 }
 
@@ -1695,10 +1730,14 @@ irsnd_stop (void)
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
  *  ISR routine
- *  @details  ISR routine, called 10000 times per second
+ *  @details  ISR routine, called from 10000 to 20000, typically 15000 times per second
  *---------------------------------------------------------------------------------------------------------------------------------------------------
  */
+#  ifdef __cplusplus
+bool
+#else
 uint8_t
+#endif
 irsnd_ISR (void)
 {
     static uint8_t              send_trailer                    = FALSE;

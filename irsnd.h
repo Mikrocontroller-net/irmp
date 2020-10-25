@@ -18,7 +18,10 @@
 #  include "irsndconfig.h"
 #endif
 
-#if defined (ARM_STM32)                         // STM32
+#ifdef ARDUINO
+#  include "irsndArduinoExt.h"
+
+#elif defined (ARM_STM32)                         // STM32
 #  define _CONCAT(a,b)                          a##b
 #  define CONCAT(a,b)                           _CONCAT(a,b)
 #  define IRSND_PORT                            CONCAT(GPIO, IRSND_PORT_LETTER)
@@ -132,10 +135,16 @@ extern "C"
 #endif
 
 extern void                                     irsnd_init (void);
+#  ifdef __cplusplus
+extern bool                                     irsnd_is_busy (void);
+extern bool                                     irsnd_send_data (IRMP_DATA *, uint8_t);
+extern bool                                     irsnd_ISR (void);
+#else
 extern uint8_t                                  irsnd_is_busy (void);
 extern uint8_t                                  irsnd_send_data (IRMP_DATA *, uint8_t);
-extern void                                     irsnd_stop (void);
 extern uint8_t                                  irsnd_ISR (void);
+#endif
+extern void                                     irsnd_stop (void);
 
 #if IRSND_USE_CALLBACK == 1
 extern void                                     irsnd_set_callback_ptr (void (*cb)(uint8_t));

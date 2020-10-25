@@ -29,11 +29,12 @@
 #  define F_INTERRUPTS                          15000   // interrupts per second
 #endif
 
+#if ! defined(ARDUINO)
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
  * Change settings from 1 to 0 if you want to disable one or more encoders.
  * This saves program space.
- * 1 enable  decoder
- * 0 disable decoder
+ * 1 enable  encoder
+ * 0 disable encoder
  *---------------------------------------------------------------------------------------------------------------------------------------------------
  */
 
@@ -87,7 +88,7 @@
 #define IRSND_SUPPORT_PANASONIC_PROTOCOL        0       // PANASONIC Beamer     >= 10000                 ~150 bytes
 #define IRSND_SUPPORT_MITSU_HEAVY_PROTOCOL      0       // Mitsubishi-Heavy Aircondition, similar Timing to Panasonic beamer
 #define IRSND_SUPPORT_IRMP16_PROTOCOL           0       // IRMP specific        >= 15000                 ~250 bytes
-
+#endif // ! defined(ARDUINO)
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
  * AVR XMega section:
@@ -174,6 +175,9 @@
  */
 #elif defined (__xtensa__)
 #  define IRSND_PIN                             0                       // choose an arduino pin with PWM function!
+
+#elif defined(ARDUINO)
+// specified here to avoid else case
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
  * Other target systems
