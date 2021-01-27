@@ -119,11 +119,6 @@ void irmp_idle(void);                   // the user has to provide an implementa
 #  define IRMP_SUPPORT_MATSUSHITA_PROTOCOL      1
 #endif
 
-#if IRMP_32_BIT == 0 && IRMP_SUPPORT_MERLIN_PROTOCOL == 1
-#  undef IRMP_SUPPORT_MERLIN_PROTOCOL
-#  warning MERLIN protocol disabled, IRMP_32_BIT=1 needed
-#endif
-
 #if IRMP_SUPPORT_DENON_PROTOCOL == 1 && IRMP_SUPPORT_RUWIDO_PROTOCOL == 1
 #  warning DENON protocol conflicts wih RUWIDO, please enable only one of both protocols
 #  warning RUWIDO protocol disabled
@@ -264,6 +259,12 @@ void irmp_idle(void);                   // the user has to provide an implementa
 
 #if IRMP_SUPPORT_LGAIR_PROTOCOL == 1 && IRMP_SUPPORT_NEC_PROTOCOL == 0
 #  warning LGAIR protocol needs also NEC protocol, NEC protocol enabled
+#  undef IRMP_SUPPORT_NEC_PROTOCOL
+#  define IRMP_SUPPORT_NEC_PROTOCOL             1
+#endif
+
+#if IRMP_SUPPORT_MELINERA_PROTOCOL == 1 && IRMP_SUPPORT_NEC_PROTOCOL == 0
+#  warning MELINERA protocol needs also NEC protocol, NEC protocol enabled
 #  undef IRMP_SUPPORT_NEC_PROTOCOL
 #  define IRMP_SUPPORT_NEC_PROTOCOL             1
 #endif

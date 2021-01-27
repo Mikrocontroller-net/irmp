@@ -88,6 +88,7 @@
 #define IRSND_SUPPORT_PANASONIC_PROTOCOL        0       // PANASONIC Beamer     >= 10000                 ~150 bytes
 #define IRSND_SUPPORT_MITSU_HEAVY_PROTOCOL      0       // Mitsubishi-Heavy Aircondition, similar Timing to Panasonic beamer
 #define IRSND_SUPPORT_IRMP16_PROTOCOL           0       // IRMP specific        >= 15000                 ~250 bytes
+#define IRSND_SUPPORT_MELINERA_PROTOCOL         0       // MELINERA (Lidl)      >= 10000                 ~100 bytes
 #endif // ! defined(ARDUINO)
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------

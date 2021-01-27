@@ -6,7 +6,7 @@
 #
 #        ./test-suite.sh
 #
-# Copyright (c) 2010 Frank Meyer - frank(at)fli4l.de
+# Copyright (c) 2010-2020 Frank Meyer - frank(at)fli4l.de
 #
 #----------------------------------------------------------------------------
 # Conflicts:
@@ -22,8 +22,7 @@ mkdir -p tmpsrc
 cp ../irmp.[ch] ../irmpconfig.h ../irsnd.[ch] ../irsndconfig.h ../irmpsystem.h ../irmpprotocols.h ../makefile.lnx tmpsrc
 cd tmpsrc
 sed 's/#define \(IRMP_SUPPORT_[A-Z_0-9]*  *\)[01]/#define \1 1/g' <irmpconfig.h |
-sed 's/#define \(IRMP_SUPPORT_RF_[A-Z_0-9]*  *\)[01]/#define \1 0/g' |
-sed 's/#define \(IRMP_32_BIT*  *\)[01]/#define \1 0/g' >irmpconfig.1
+sed 's/#define \(IRMP_SUPPORT_RF_[A-Z_0-9]*  *\)[01]/#define \1 0/g' >irmpconfig.1
 mv irmpconfig.1 irmpconfig.h
 make -f makefile.lnx clean
 make -f makefile.lnx all
@@ -77,8 +76,6 @@ scan_10khz_files='
     sharp_lang_10khz.txt
     xbox360-10kHz.txt'
 
-scan_10khz_32_bit_files=''
-
 scan_15khz_files='
     bo_beolink1000-15kHz.txt
     bose_wave_system_15khz.txt
@@ -88,6 +85,8 @@ scan_15khz_files='
     irc-15kHz.txt
     kathrein-15kHz.txt
     lg-air-15kHz.txt
+    melinera-15kHz.txt
+    merlin-15kHz.txt
     panasonic-vcr-15kHz.txt
     pentax-15kHz.txt
     rc5-philipps-15kHz.txt
@@ -108,36 +107,32 @@ scan_15khz_files='
     vincent-flash-15kHz.txt
     xbox360-15kHz.txt'
 
-scan_15khz_32_bit_files='
-    merlin-15kHz.txt'
-
 scan_20khz_files='
     rc-car-20kHz.txt
     fdc-20kHz.txt
     fdc2-20kHz.txt
+    melinera-20kHz.txt
+    merlin2-20kHz.txt
     metz-20kHz.txt
     rcmm-20kHz.txt
     saa3004-20kHz.txt
     telefunken-1560-20kHz.txt'
-
-scan_20khz_32_bit_files='
-    merlin2-20kHz.txt'
 
 for j in $scan_10khz_files
 do
     echo -n "testing $j (16 BIT) ... "
     if tmpsrc/irmp-10kHz -v < $j | grep -q error
     then
-	tmpsrc/irmp-10kHz -v < $j | grep error
-	echo "test failed"
-	exit 1
+        tmpsrc/irmp-10kHz -v < $j | grep error
+        echo "test failed"
+        exit 1
     else
-	if tmpsrc/irmp-10kHz -v < $j | grep -q checked
-	then
-	    echo "checked!"
-	else
-	    echo "successful"
-	fi
+        if tmpsrc/irmp-10kHz -v < $j | grep -q checked
+        then
+            echo "checked!"
+        else
+            echo "successful"
+        fi
     fi
 done
 
@@ -146,16 +141,16 @@ do
     echo -n "testing $j (16 BIT) ... "
     if tmpsrc/irmp-15kHz -v < $j | grep -q error
     then
-	tmpsrc/irmp-15kHz -v < $j | grep error
-	echo "test failed"
-	exit 1
+        tmpsrc/irmp-15kHz -v < $j | grep error
+        echo "test failed"
+        exit 1
     else
-	if tmpsrc/irmp-15kHz -v < $j | grep -q checked
-	then
-	    echo "checked!"
-	else
-	    echo "successful"
-	fi
+        if tmpsrc/irmp-15kHz -v < $j | grep -q checked
+        then
+            echo "checked!"
+        else
+            echo "successful"
+        fi
     fi
 done
 
@@ -164,79 +159,16 @@ do
     echo -n "testing $j (16 BIT) ... "
     if tmpsrc/irmp-20kHz -v < $j | grep -q error
     then
-	tmpsrc/irmp-20kHz -v < $j | grep error
-	echo "test failed"
-	exit 1
+        tmpsrc/irmp-20kHz -v < $j | grep error
+        echo "test failed"
+        exit 1
     else
-	if tmpsrc/irmp-20kHz -v < $j | grep -q checked
-	then
-	    echo "checked!"
-	else
-	    echo "successful"
-	fi
-    fi
-done
-
-# 32 BIT tests:
-
-cd tmpsrc
-sed 's/#define \(IRMP_32_BIT*  *\)[01]/#define \1 1/g' <irmpconfig.h >irmpconfig.new
-mv irmpconfig.new irmpconfig.h
-make -f makefile.lnx clean
-make -f makefile.lnx all
-cd ..
-
-for j in $scan_10khz_files $scan_10khz_32_bit_files
-do
-    echo -n "testing $j (32 BIT) ... "
-    if tmpsrc/irmp-10kHz -v < $j | grep -q error
-    then
-	tmpsrc/irmp-10kHz -v < $j | grep error
-	echo "test failed"
-	exit 1
-    else
-	if tmpsrc/irmp-10kHz -v < $j | grep -q checked
-	then
-	    echo "checked!"
-	else
-	    echo "successful"
-	fi
-    fi
-done
-
-for j in $scan_15khz_files $scan_15khz_32_bit_files
-do
-    echo -n "testing $j (32 BIT) ... "
-    if tmpsrc/irmp-15kHz -v < $j | grep -q error
-    then
-	tmpsrc/irmp-15kHz -v < $j | grep error
-	echo "test failed"
-	exit 1
-    else
-	if tmpsrc/irmp-15kHz -v < $j | grep -q checked
-	then
-	    echo "checked!"
-	else
-	    echo "successful"
-	fi
-    fi
-done
-
-for j in $scan_20khz_files $scan_20khz_32_bit_files
-do
-    echo -n "testing $j (32 BIT) ... "
-    if tmpsrc/irmp-20kHz -v < $j | grep -q error
-    then
-	tmpsrc/irmp-20kHz -v < $j | grep error
-	echo "test failed"
-	exit 1
-    else
-	if tmpsrc/irmp-20kHz -v < $j | grep -q checked
-	then
-	    echo "checked!"
-	else
-	    echo "successful"
-	fi
+        if tmpsrc/irmp-20kHz -v < $j | grep -q checked
+        then
+            echo "checked!"
+        else
+            echo "successful"
+        fi
     fi
 done
 

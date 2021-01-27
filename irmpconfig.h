@@ -19,23 +19,6 @@
 
 #ifdef IRMPCONFIG_STAGE1_H
 
-/*---------------------------------------------------------------------------------------------------------------------------------------------------
- * Change IRMP_32_BIT here
- *
- * Normally, IRMP_32_BIT ist 0. Then we use irmp.command as a 16 bit value.
- * If you set IRMP_32_BIT to 1, we will use irmp.command as a 32 bit value.
- * A 32 bit command costs more CPU resources on 8 bit processors (e.g. AVR),
- * but there are IR protocols which need more than 16 bits for a reasonable
- * command value.
- *
- * If you want to use one of the following protocols, set IRMP_32_BIT to 1,
- * otherwise set it to 0:
- *    - MERLIN
- *---------------------------------------------------------------------------------------------------------------------------------------------------
- */
-
-#define IRMP_32_BIT                             0                               // use 32 bit command value, 0 or 1
-
 #endif // IRMPCONFIG_STAGE1_H
 
 #ifdef IRMPCONFIG_STAGE2_H
@@ -127,6 +110,7 @@
 #define IRMP_SUPPORT_GREE_PROTOCOL              0       // GREE CLIMATE         >= 10000                 ~250 bytes
 #define IRMP_SUPPORT_RCII_PROTOCOL              0       // RCII T+A             >= 15000                 ~250 bytes
 #define IRMP_SUPPORT_METZ_PROTOCOL              0       // METZ                 >= 15000                 ~250 bytes
+#define IRMP_SUPPORT_MELINERA_PROTOCOL          0       // MELINERA (Lidl)      >= 10000                  ~50 bytes
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
  * Protocols Part 2: RF decoders
